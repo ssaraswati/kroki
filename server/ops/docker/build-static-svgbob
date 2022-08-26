@@ -1,4 +1,7 @@
 # build static executable binary
 FROM ekidd/rust-musl-builder:1.56.1
+COPY Cargo.toml .
 
-RUN cargo install --quiet --version 0.5.3 svgbob_cli
+RUN SVGBOB_VERSION=`cat Cargo.toml | sed -nr '/svgbob_cli =/{s/svgbob_cli = "([0-9]+.[0-9]+.[0-9]+)"/\1/;p;}'` \
+  && cargo install --quiet --version $SVGBOB_VERSION svgbob_cli
+
